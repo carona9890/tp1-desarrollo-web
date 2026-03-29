@@ -145,21 +145,29 @@
         renderTasks();
     }
 
-    function addTask() {
+    // Capa de Datos: No sabe que existe el HTML
+const TodoService = {
+    add(text) {
+        const newTask = { id: Date.now(), text, completed: false };
+        tasks.push(newTask);
+        saveTasks(); // Persistencia
+        return newTask;
+    }
+};
+
+// Capa de Interfaz: Solo maneja lo que el usuario ve
+const UIManager = {
+    handleCreate() {
         const input = document.getElementById('taskInput');
         const text = input.value.trim();
         
         if (text === "") return alert("La tarea no puede estar vacía");
         
-        tasks.push({
-            id: Date.now(),
-            text: text,
-            completed: false
-        });
-        
-        input.value = "";
-        saveAndRender();
+        TodoService.add(text); // Llama al servicio
+        input.value = "";      // Limpia la UI
+        renderTasks();         // Actualiza la vista
     }
+};
 
     function deleteTask(id) {
         tasks = tasks.filter(t => t.id !== id);
@@ -181,31 +189,29 @@
     }
 
     function renderTasks() {
-        const list = document.getElementById('taskList');
-        list.innerHTML = "";
+    const list = document.getElementById('taskList');
+    list.innerHTML = ""; // Limpiar contenedor
 
-        if (tasks.length === 0) {
-            list.innerHTML = `<p class="empty-msg">No hay tareas pendientes.</p>`;
-            return;
-        }
+    tasks.forEach(task => {
+        const card = document.createElement('div');
+        card.className = `task-card ${task.completed ? 'completed' : ''}`;
 
-        tasks.forEach(task => {
-            const card = document.createElement('div');
-            card.className = `task-card ${task.completed ? 'completed' : ''}`;
-            
-            card.innerHTML = `
-                <div class="task-info">
-                    <input type="checkbox" ${task.completed ? 'checked' : ''} onclick="toggleTask(${task.id})">
-                    <span class="task-text" onclick="toggleTask(${task.id})">${task.text}</span>
-                </div>
-                <div class="actions">
-                    <button class="btn-action edit" onclick="editTask(${task.id})">Editar</button>
-                    <button class="btn-action delete" onclick="deleteTask(${task.id})">Borrar</button>
-                </div>
-            `;
-            list.appendChild(card);
-        });
-    }
+        // Crear texto de forma segura
+        const textSpan = document.createElement('span');
+        textSpan.className = 'task-text';
+        textSpan.textContent = task.text; // MEJORA DE SEGURIDAD
+        textSpan.onclick = () => { TodoService.toggle(task.id); renderTasks(); };
+
+        // Botón Borrar
+        const btnDelete = document.createElement('button');
+        btnDelete.textContent = "Borrar";
+        btnDelete.className = "btn-action delete";
+        btnDelete.onclick = () => { TodoService.remove(task.id); renderTasks(); };
+
+        card.append(textSpan, btnDelete);
+        list.appendChild(card);
+    });
+}
 
     // Cargar al iniciar
     renderTasks();
