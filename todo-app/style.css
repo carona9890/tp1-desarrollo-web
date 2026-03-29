@@ -1,0 +1,301 @@
+/* finanFE.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+}
+
+.titulo-pagina {
+  margin: 0;               
+  margin-left: 15px;     
+  color: white;
+}
+
+.menu {
+  background-color: #105424;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 1px;
+  height: 100px;
+  border: 3px solid black;
+}
+
+.menu nav {
+  margin-left: auto;
+}
+
+.menu nav ul {
+  display: flex;         
+  align-items: center;   
+  list-style: none;      
+  margin: 0;
+  padding: 0;
+  gap: 10px;
+}
+
+.menu .logo {
+  margin-left: 15px;
+  margin-top: 0px;
+  width: 100px;
+  height: auto;
+}
+
+.menu .logo-usuario {
+  width: auto;
+  height: 70px;
+  margin-top: 10px ;
+  margin-bottom: 0px ;
+  margin-right: 5px ;
+}
+
+.menu ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.menu li a {
+  display: block;
+  margin-right: 10px;
+  margin-top: 50px;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+.menu li a:hover {
+  background-color: #869fb8;
+}
+
+.contenedor {
+  display: flex;
+}
+
+.sidebar {
+  background-color: orange;
+  padding: 10px;
+  width: 60px;
+  height: 100vh;
+  border: 3px solid black;
+  border-top: 0px solid black;
+}
+
+.logo-sidebar {
+  width: 120%;
+  height: auto;
+  border-radius: 100px;
+  border: 3px solid black;
+  margin-left: -3px;
+}
+.logo-sidebar, Logo-lateral2  {
+  margin-top: 3px;
+}
+
+.logo-sidebar:hover {
+  background-color: #ffffff;
+}
+
+.contenido {
+  flex: 1;
+  background-color: #f0f0f0;
+  margin: 20px;
+}
+
+/* --- ESTILOS GENERALES DE BOTONES --- */
+/* Unificamos el estilo de botones de acción */
+#boton_transferir, #boton_retirar, #boton_pagofacil, #boton_ahorros, #boton_cancelar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  border: 3px solid black;
+  transition: background 0.2s;
+}
+
+/* --- PÁGINA AHORROS --- */
+#fecha {
+  width: 100px;  
+  height: 40px;
+}
+
+#boton_ahorros {
+  width: 80px;
+  height: 40px;
+  font-size: 12px;
+  background-color: #328aa5;
+  color: #000000;
+  text-align: center;
+}
+
+#boton_ahorros:hover {
+  background-color: #869fb8;
+}
+
+#dinero_meta {
+  width: 200px;
+  padding: 10px;
+  font-size: 12px;
+  border: 3px solid black;
+}
+
+.fila_ahorros {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;  
+  justify-content: center;
+  gap: 15px;
+}
+
+#texto_ahorros {
+  text-align: left;
+  margin-top: 5px;
+}
+
+.fila_meta_activa {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;  
+  justify-content: center;
+  gap: 15px;
+}
+
+#boton_cancelar {
+  width: 100px;
+  padding: 10px;
+  font-size: 12px;
+  background-color: #d60a0a;
+  color: #000000;
+}
+
+#boton_cancelar:hover {
+  background-color: #e44949;
+}
+
+
+/* --- NUEVA ESTRUCTURA TRANSFERIR (LIMPIA) --- */
+
+.panel-operaciones {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Espacio entre el renglón Transferir y Retirar */
+  padding-left: 20px; /* Un poco de aire a la izquierda */
+}
+
+.renglon-simple {
+  display: flex;
+  align-items: center; /* Alinea texto y botones al centro verticalmente */
+  gap: 20px; /* Espacio entre el texto y los botones */
+}
+
+.etiqueta-accion {
+  font-size: 24px;
+  font-weight: bold;
+  min-width: 150px; /* Ancho fijo para que los botones queden alineados verticalmente */
+}
+
+.grupo-botones {
+  display: flex;
+  gap: 15px; /* Espacio entre botones del mismo renglón */
+}
+
+/* Botones Específicos de Transferencia */
+#boton_transferir, #boton_retirar {
+  width: 50px;
+  height: 50px;
+  background-color: #328aa5;
+  color: #328aa5;
+  font-size: 30px; /* El guión más grande */
+}
+
+#boton_pagofacil {
+  width: 120px;
+  height: 50px;
+  background-color: #f0d05b;
+  overflow: hidden; /* Para que la imagen no se salga */
+}
+
+.img-boton {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#boton_transferir:hover, #boton_retirar:hover {
+  background-color: #869fb8;
+  color: #869fb8;
+}
+
+/* --- MOVIMIENTOS (TARJETAS) --- */
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; 
+}
+
+.fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 6px; 
+  padding: 8px 12px;  
+  box-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+}
+
+.flecha {
+  font-size: 22px; 
+  font-weight: bold;
+  margin-right: 10px; 
+  width: 25px;
+  text-align: center;
+}
+
+.datos {
+  display: flex;
+  flex-direction: column;
+  margin-right: auto; 
+  gap: 2px; 
+}
+
+.titulo {
+  font-weight: bold;
+  font-size: 14px; 
+  background-color: #eee;
+  border: 1px solid black;
+  padding: 1px 5px; 
+  border-radius: 3px;
+  width: fit-content;
+}
+
+.fecha {
+  font-size: 11px; 
+  color: #666;
+  margin-left: 1px; 
+}
+
+.precio {
+  font-weight: bold;
+  font-size: 16px; 
+  margin-right: 10px;
+}
+
+.icono {
+  font-size: 16px;
+  cursor: pointer;
+  color: #333;
+}
+
+.verde .flecha, .verde .precio { color: #008000; }
+.rojo .flecha, .rojo .precio { color: #b30000; }

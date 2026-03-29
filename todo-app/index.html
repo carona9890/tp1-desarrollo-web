@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tareas del Ojo - To-Do List</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --accent: #4299e1;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --bg: #f0f2f5;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+        body {
+            background-color: var(--bg);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Cabecera */
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 { font-size: 22px; margin-bottom: 15px; }
+
+        /* Formulario de Entrada */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            background: #ebf8ff;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        input[type="text"]:focus { border-color: var(--accent); }
+
+        .btn-add {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Lista de Tareas */
+        .task-list { padding: 20px; }
+
+        .task-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border: 1px solid #edf2f7;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: white;
+            transition: 0.2s;
+        }
+
+        .task-card.completed {
+            background: #f8fafc;
+            opacity: 0.6;
+        }
+
+        .task-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .task-text { font-weight: 500; cursor: pointer; }
+        .completed .task-text { text-decoration: line-through; }
+
+        .actions { display: flex; gap: 8px; }
+
+        .btn-action {
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            color: white;
+        }
+
+        .edit { background: #ecc94b; color: #333; }
+        .delete { background: var(--danger); }
+
+        .empty-msg {
+            text-align: center;
+            color: #a0aec0;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header class="header">
+        <h1>👁️ Tareas del Ojo</h1>
+        <p>Gestiona tus pendientes con claridad</p>
+    </header>
+
+    <div class="input-group">
+        <input type="text" id="taskInput" placeholder="¿Qué tienes que hacer hoy?">
+        <button class="btn-add" onclick="addTask()">Añadir</button>
+    </div>
+
+    <main class="task-list" id="taskList">
+        </main>
+</div>
+
+<script>
+    let tasks = JSON.parse(localStorage.getItem('ojoTasks')) || [];
+
+    function saveAndRender() {
+        localStorage.setItem('ojoTasks', JSON.stringify(tasks));
+        renderTasks();
+    }
+
+    function addTask() {
+        const input = document.getElementById('taskInput');
+        const text = input.value.trim();
+        
+        if (text === "") return alert("La tarea no puede estar vacía");
+        
+        tasks.push({
+            id: Date.now(),
+            text: text,
+            completed: false
+        });
+        
+        input.value = "";
+        saveAndRender();
+    }
+
+    function deleteTask(id) {
+        tasks = tasks.filter(t => t.id !== id);
+        saveAndRender();
+    }
+
+    function toggleTask(id) {
+        tasks = tasks.map(t => t.id === id ? {...t, completed: !t.completed} : t);
+        saveAndRender();
+    }
+
+    function editTask(id) {
+        const task = tasks.find(t => t.id === id);
+        const newText = prompt("Editar tarea:", task.text);
+        if (newText && newText.trim() !== "") {
+            task.text = newText.trim();
+            saveAndRender();
+        }
+    }
+
+    function renderTasks() {
+        const list = document.getElementById('taskList');
+        list.innerHTML = "";
+
+        if (tasks.length === 0) {
+            list.innerHTML = `<p class="empty-msg">No hay tareas pendientes.</p>`;
+            return;
+        }
+
+        tasks.forEach(task => {
+            const card = document.createElement('div');
+            card.className = `task-card ${task.completed ? 'completed' : ''}`;
+            
+            card.innerHTML = `
+                <div class="task-info">
+                    <input type="checkbox" ${task.completed ? 'checked' : ''} onclick="toggleTask(${task.id})">
+                    <span class="task-text" onclick="toggleTask(${task.id})">${task.text}</span>
+                </div>
+                <div class="actions">
+                    <button class="btn-action edit" onclick="editTask(${task.id})">Editar</button>
+                    <button class="btn-action delete" onclick="deleteTask(${task.id})">Borrar</button>
+                </div>
+            `;
+            list.appendChild(card);
+        });
+    }
+
+    // Cargar al iniciar
+    renderTasks();
+</script>
+
+</body>
+</html>
